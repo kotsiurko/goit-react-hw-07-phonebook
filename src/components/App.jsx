@@ -14,6 +14,8 @@ import {
 } from 'redux/contacts/selectors';
 import { requestContacts } from 'redux/contacts/operations';
 
+import { InfinitySpin } from 'react-loader-spinner';
+
 export const App = () => {
   const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
@@ -29,15 +31,18 @@ export const App = () => {
     <Container>
       <h1>Phonebook App</h1>
       <ContactForm />
-      {isLoading && !error && <div>Loading...</div>}
-      {contacts.length > 0 ? (
+      {isLoading && !error && (
+        <div>
+          <InfinitySpin width="200" color="#4fa94d" />
+        </div>
+      )}
+      {!isLoading && contacts.length > 0 && (
         <>
           <Filter />
           <ContactList />
         </>
-      ) : (
-        <p>Please, add contact</p>
       )}
+      {!isLoading && contacts.length === 0 && <p>Please, add contact</p>}
     </Container>
   );
 };
